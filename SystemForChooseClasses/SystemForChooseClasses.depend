@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1545648299 source:/home/ciecie/pro/SystemForChooseClasses/main.c
+	<stdio.h>
+	<stdlib.h>
+
+1545650364 source:/home/ciecie/pro/SystemForChooseClasses/ok.c
+	<stdio.h>
+	<stdlib.h>
+
