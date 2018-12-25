@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "functions.h"
 int main()
 {
     int chooseStatus=0;
+    //bool flag=true;
     printf("*******************************************************\n");
     printf("************* Welcome to class choose system *************\n\n");
     printf("********************* FUNCTIONS **********************\n");
@@ -13,7 +14,7 @@ int main()
     printf("***************** 4.  Add Class's Information ***************\n");
     printf("***************** 5.  Exit The System! *********************\n");
     printf("*******************************************************\n\n");
-    while(true){
+    while(1){
          printf("Choose function please(input the function's number):  ");
          scanf("%d", &chooseStatus);
          if(chooseStatus==5) break;
@@ -27,4 +28,4 @@ int main()
              putchar('\a');
     }
 }
-   return 0;
+   return 0;}
