@@ -1,14 +1,16 @@
 # depslib dependency file v1.0
-1545734052 source:/home/ciecie/pro/SystemForChooseClasses/main.c
+1545755560 source:/home/ciecie/pro/SystemForChooseClasses/main.c
 	<stdio.h>
 	<stdlib.h>
+	<string.h>
 	"functions.h"
+	"/usr/include/mysql/mysql.h"
 
 1545650364 source:/home/ciecie/pro/SystemForChooseClasses/ok.c
 	<stdio.h>
 	<stdlib.h>
 
-1545735589 source:/home/ciecie/pro/SystemForChooseClasses/chooseClasses.c
+1545737387 source:/home/ciecie/pro/SystemForChooseClasses/chooseClasses.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

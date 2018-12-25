@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1545753205 source:/home/ciecie/pro/Project/main.c
+	<stdio.h>
+	<stdlib.h>
+	<mysql/mysql.h>
+	<time.h>
+	<string.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<fcntl.h>
+	<stdbool.h>
+

@@ -10,7 +10,7 @@ void chooseClasses()
     //int res;
     MYSQL_RES * result;
     MYSQL_ROW row;
-    conn = mysql_init(NULL);
+  //  conn = mysql_init(NULL);
     //建立与数据库的连接，如果不成功则退出
     if(!mysql_real_connect(conn,"127.0.0.1","root","123456","ChooseClassSystem",3306,NULL,0))
     {
@@ -18,7 +18,7 @@ void chooseClasses()
         return;
     }
 
-    char *studentId = "";
+    char *studentId;
     //存放用户输入的密码
     char *password = "";
     //存放查询到的密码

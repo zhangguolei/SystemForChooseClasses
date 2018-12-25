@@ -1,0 +1,4 @@
+10001 wang 19 man ruanjian152 123456
+10002 li 20 man ruanjian152 123456
+10003 sun 21 woman ruanjian153 123456
+1004 yang 18 woman ruanjian151 123456
