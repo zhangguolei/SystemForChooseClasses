@@ -7,28 +7,28 @@
 #include<sys/stat.h>
 #include<fcntl.h>
 #include<stdbool.h>
+#include "functions.h"
+#include "/usr/include/mysql/mysql.h"
 #define MAX_SIZE 20
 #define MAX 500
-MYSQL* sql;
-MYSQL_RES * res_ptr;
-MYSQL_ROW sqlrow;
-void connect_()
+/*void connect_()
 {
 	    sql=mysql_init(NULL);
 		if(!sql)
 		{
-			printf("\t\t初始化失败！\n");
+			printf("\t\t Initialize failed! \n");
 		}
 		//printf("111\n");
 		sql=mysql_real_connect(sql,"localhost","root","zy0101zy","mysql",0,NULL,0);
 		if(!sql)
-			printf("\t\t链接失败！\n");
+			printf("\t\t Connect failed! \n");
 }
 
 void unconnect()
 {
 	    mysql_close(sql);
 }
+//vertify()
 int yanzheng(char* name,char*  passwd,const char* type)
 {
 	char str[20]="";
@@ -46,13 +46,13 @@ int yanzheng(char* name,char*  passwd,const char* type)
 		//printf("%s %s %s %s\n",str,str1,name,passwd);
 		if(strcmp(name,str)!=0)
 		{
-			 printf("\t\t用户名不正确！\n");
+			 printf("\t\t User name not correct! \n");
 			 mysql_free_result(res_ptr);
 			 return 0;
 		}
 		if(strcmp(passwd,str1)!=0)
 		{
-			printf("\t\tpasswd is error！\n");
+			printf("\t\t password is error! \n");
 			mysql_free_result(res_ptr);
 			return 0;
 		}
@@ -61,7 +61,7 @@ int yanzheng(char* name,char*  passwd,const char* type)
 	}
 	else
 	{
-		printf("\t\tuser not ex!\n");
+		printf("\t\t user not exist! \n");
 		return 0;
 	}
 }
@@ -71,9 +71,9 @@ int login( const char* f,char * no)
 	    char name[MAX_SIZE+1],pawd[MAX_SIZE];
 		char sel[MAX+1],select1[MAX+1],insert[MAX+1];
 		time_t t;
-		printf("\t\t\t用户名：");
+		printf("\t\t\t User name: ");
 		scanf("%s",name);
-		printf("\t\t\t密码：");
+		printf("\t\t\t Password: ");
 		scanf("%s",pawd);
 		if(strcmp(f,"teacher")==0)
 		{
@@ -85,7 +85,6 @@ int login( const char* f,char * no)
 					strcpy(no,name);
 					if(yanzheng(name,pawd,"teacher"))
 					{
-					//printf("aaa...\n");
 						time(&t);
 						char str[20];
 						gcvt(t,19,str);
@@ -100,8 +99,8 @@ int login( const char* f,char * no)
 						int re = mysql_real_query(sql,insert,strlen(insert));
 						if(!re)
 						{
-							printf("\t\t\tinsert successed!");
-							printf("\t\t\tWelcome  %s! \n",name);
+							printf("\t\t\t Insert successed! \n");
+							printf("\t\t\t Welcome  %s! \n",name);
 							return 1;
 						}
 						else
@@ -123,7 +122,7 @@ int login( const char* f,char * no)
 				int flag=mysql_real_query(sql,sel,strlen(sel));
 				if(flag)
 				{
-					printf("\t\t用不存在！\n");
+					printf("\t\t User is not exist! \n");
 				}
 				else
 				{
@@ -145,8 +144,8 @@ int login( const char* f,char * no)
 
 						if(!re)
 						{
-							printf("\t\tinsert successed!");
-							printf("\t\t\tWelcome  %s!\n",name);
+							printf("\t\t insert successed! \n");
+							printf("\t\t\t Welcome  %s!\n",name);
 							return 1;
 						}
 						else
@@ -160,7 +159,7 @@ int login( const char* f,char * no)
 			}
 }
 
-void see(char * s,char * t)
+void check(char * s,char * t)
 {
 	char sel[MAX];
 
@@ -178,7 +177,7 @@ void see(char * s,char * t)
 			{
 				int count=0;
 				sqlrow=mysql_fetch_row(res_ptr);
-				printf("\t\t\ttno\ttname\tage\tpasswd\n");
+				printf("\t\t\t ID\tName\tAge\tSex\tClass\tPassword\n ");
 				printf("\t\t\t");
 				while(count<mysql_field_count(sql))
 				{
@@ -199,13 +198,12 @@ void see(char * s,char * t)
 		 flag=mysql_real_query(sql,sel,strlen(sel));
 		 if(!flag)
 		 {
-			// printf("ffff...\n");
 			 int count=0;
 			 res_ptr=mysql_use_result(sql);
 			 if(res_ptr)
 			 {
 				 sqlrow=mysql_fetch_row(res_ptr);
-				 printf("\t\t\tsno\tsname\tsage\tsex\tsclass\tpasswd\n");
+				 printf("\t\t\t ID\tName\tAge\tSex\tClass\tPassword\n ");
 				 printf("\t\t\t");
 				 while(count<mysql_field_count(sql))
 				 {
@@ -226,7 +224,7 @@ void ch_passwd(const char* name,const char * no)
 {
 	char sel[MAX];
    char old_pass[MAX_SIZE];
-	printf("\tenter the old passwd:");
+	printf("\t Enter the old passwd: ");
 	scanf("%s",old_pass);
 	if(strcmp(name,"teacher")==0)
 	{
@@ -241,7 +239,7 @@ void ch_passwd(const char* name,const char * no)
 
 			if(strcmp(sqlrow[1],old_pass)!=0)
 			{
-				printf("the old passwd is false!\n");
+				printf("The old passwd is uncorrect!\n");
 				mysql_free_result(res_ptr);
 			}
 			else
@@ -250,7 +248,7 @@ void ch_passwd(const char* name,const char * no)
 
 				char in[MAX];
 				char new_passwd[MAX_SIZE];
-				printf("\tenter the new passwd:");
+				printf("\t Enter the new passwd: ");
 				scanf("%s",new_passwd);
 				strcpy(in,"update teacher set passwd='");
 				strcat(in,new_passwd);
@@ -258,11 +256,10 @@ void ch_passwd(const char* name,const char * no)
 				strcat(in,"where tno='");
 				strcat(in,no);
 				strcat(in,"'");
-				//printf("%s \n",in);
 				int re= mysql_real_query(sql,in,strlen(in));
 				if(!re)
 				{
-					printf("passwd reset successed!\n");
+					printf("Password reset successfully! \n");
 				}
 				else
 				{
@@ -285,7 +282,7 @@ void ch_passwd(const char* name,const char * no)
 
 			if(strcmp(sqlrow[1],old_pass)!=0)
 			{
-			  	printf("the old passwd is false!\n");
+			  	printf("The old passwd is uncorrect! \n");
 				mysql_free_result(res_ptr);
 			}
 			else
@@ -293,7 +290,7 @@ void ch_passwd(const char* name,const char * no)
 				 //ysql_free_result(res_ptr);
 				char in[MAX];
 				char new_passwd[MAX_SIZE];
-				printf("\tenter the new passwd:");
+				printf("\t Enter the new password: ");
 				scanf("%s",new_passwd);
 				strcpy(in,"update student set passwd='");
 				strcat(in,new_passwd);
@@ -302,9 +299,8 @@ void ch_passwd(const char* name,const char * no)
 				int re;
 				if(!(re= mysql_real_query(sql,in,strlen(in))))
 				{
-					 printf("rechange successed!\n");
+					 printf("Successful! \n");
 				}
-				 //mysql_free_result(res_ptr);
 			}
 		}
 		else
@@ -313,9 +309,10 @@ void ch_passwd(const char* name,const char * no)
 		}
 	}
 }
+
+
 void change_G()
 {
-
 	char sno[MAX_SIZE];
 	char cno[MAX_SIZE];
 	char up[MAX];
@@ -323,11 +320,11 @@ void change_G()
 	int flag;
 	while(true)
 	{
-		printf("\t\t输入学生学号:");
+		printf("\t\t Input the student ID: ");
 		scanf("%s",sno);
-		printf("\t\t输入课程号：");
+		printf("\t\t Input the course ID: ");
 		scanf("%s",cno);
-		printf("\t\tenter grade：");
+		printf("\t\t Enter the grade: ");
 		scanf("%lf",&grade);
 		if(grade<0)
 		{
@@ -348,7 +345,7 @@ void change_G()
 
 			if(!(flag=mysql_real_query(sql,up,strlen(up))))
 			{
-				printf("\t\t\t修改成功！\n");
+				printf("\t\t\t Update Successfully! \n");
 			}
 			else
 			{
@@ -362,7 +359,7 @@ void choose_C(const char* sno)
 	char cno[MAX_SIZE];
 	char in[MAX];
 	int flag;
-	printf("\t\t课程号：");
+	printf("\t\t Course ID: ");
 	scanf("%s",cno);
 
 	strcpy(in,"insert into select_c(sno,cno,grade) values('");
@@ -371,9 +368,9 @@ void choose_C(const char* sno)
 	strcat(in,cno);
 	strcat(in,"',0)");
 
-	if(!(flag=mysql_query(sql,in)))
+	if(!(flag=mysql_real_query(sql,in, strlen(sql))))
 	{
-		printf("\t\t\t恭喜，选课成功！\n");
+		printf("\t\t Choose the course successfully! \n");
 	}
 	else
 	{
@@ -420,11 +417,11 @@ void addstudent()
 			//	printf("%s \n",in);
 				if(!(j=mysql_real_query(sql,in,strlen(in))))
 				{
-				printf("\t\t插入成功...\n");
+				printf("\t\t Insert Successfully! \n");
 				}
 				else
 				{
-				printf("\t\t插入失败... %s \n",mysql_error(sql));
+				printf("\t\t Insert Failed! %s \n",mysql_error(sql));
 				}
 			}
 			else if(ch[0]==' ')
@@ -440,23 +437,29 @@ void addstudent()
 			}
 		}
 	}
-}
+}*/
+
 int main()
 {
+
+    MYSQL* sql;
+    MYSQL_RES * res_ptr;
+    MYSQL_ROW sqlrow;
+
 	int a,b;
 	int c=1;
 	int count,count1;
 	char temp[MAX_SIZE];
-	connect_();
-	addstudent();
+	connectToMysql(sql);
+	addStudent(sql);
 	printf("************************************************\n");
-	printf("|***\t\t\tThe System For Classes Choosing\t\t\t***|\n");
-	printf("|\t\t\t1.Log in\t\t\t\t|\n");
-	printf("|\t\t\t2.Log out\t\t\t\t|\n");
-	printf("|************************************************n");
-	printf("\t\t\t\t选择:");
-	scanf("%d",&a);
+	printf("***** The System For Classes Choosing *****\n");
+	printf("\t\t 1.Log in\t\t\t\t\n");
+	printf("\t\t 2.Log out\t\t\t\t\n");
 	printf("Input any number to exit......\n");
+	printf("***********************************************\n");
+	printf("Select Please: ");
+	scanf("%d",&a);
 	getchar();
 	getchar();
 
@@ -468,42 +471,41 @@ int main()
 				{
 					system("clear");
 					printf("**********************************************\n");
-					printf("|\t\t\t\t Select Please\n");
-					printf("|\t\t\t\t1.Teacher\n");
-					printf("|\t\t\t\t2.Student\n");
-					printf("|\t\t\t\t Input any other numbers to exit... \n");
-					printf("|*********************************************\n");
+					printf("\t\t\t  Select Please\n");
+					printf("\t\t\t\t1.Teacher\n");
+					printf("\t\t\t\t2.Student\n");
+					printf("\t\t\t Input any other numbers to exit... \n");
+					printf("*********************************************\n");
 					printf("\t\t\t\t Choose:");
 					scanf("%d",&b);
 
 					switch(b)
 					{
 						case 1:
-							if(login("teacher",temp))
+							if(login("teacher",temp, MAX_SIZE, MAX, sql, res_ptr, sqlrow))
 							{
-							//system("clear");
 								while(true)
 								{
 									system("clear");
-									printf("+++++++++++++++++++++++++++++++++++++++\n");
-									printf("|\t\t\t\t选择操作\n");
-									printf("|\t\t\t\t1.修改密码\n");
-									printf("|\t\t\t\t2.修改成绩\n");
-									printf("|\t\t\t\t3.查看基本信息\n");
-									printf("|\t\t\t\t4.退出\n");
-									printf("|++++++++++++++++++++++++++++++++++++++\n");
-									printf("\t\t\t\t选择:");
+									printf("*********************************\n");
+									printf("\t\t\t Select Operation Please \n");
+									printf("\t\t\t 1. Change Password\n");
+									printf("\t\t\t 2. Change Student's Grade\n");
+									printf("\t\t\t 3. Looking basic Information\n");
+									printf("\t\t\t 4.Exit \n");
+									printf("*********************************\n");
+									printf("\t\t\t Select: ");
 									scanf("%d",&count1);
 									switch(count1)
 									{
 										case 1:
-											ch_passwd("teacher",temp);
+											changePasswd("teacher",temp, res_ptr, sql, sqlrow, MAX_SIZE, MAX);
 											break;
 										case 2:
-											change_G();
+											changeGrade(sql, MAX_SIZE, MAX);
 											break;
 										case 3:
-											see("teacher",temp);
+											check("teacher",temp, res_ptr, sql, sqlrow, MAX);
 											break;
 										default:
 											count1=0;
@@ -511,38 +513,37 @@ int main()
 									}
 									if(count1==0)
 									break;
-									printf("任意键继续....");
+									printf("Input any number to exit......");
 									getchar();
 									getchar();
 								}
 							}
 							break;
 						case 2:
-							if(login("student",temp))
+							if(login("student",temp, MAX_SIZE, MAX, sql, res_ptr, sqlrow))
 							{
 								while(true)
 								{
 									system("clear");
-									printf("___________________________________________\n");
-									printf("|\t\t\t\t选择操作\n");
-									printf("|\t\t\t\t1.修改密码\n");
-									printf("|\t\t\t\t2.选课\n");
-									printf("|\t\t\t\t3.查看基本信息\n");
-									printf("|\t\t\t\t4.退出\n");
-									printf("|___________________________________________\n");
-									printf("==================:");
+									printf("**********************************************\n");
+                            printf("|\t\t\t\t Select Please\n");
+                            printf("|\t\t\t\t1.Teacher\n");
+                            printf("|\t\t\t\t2.Student\n");
+                            printf("|\t\t\t\t Input any other numbers to exit... \n");
+                            printf("|*********************************************\n");
+                            printf("\t\t\t\t Choose:");
 									scanf("%d",&count);
 
 									switch(count)
 									{
 										case 1:
-											ch_passwd("student",temp);
+											changePasswd("student",temp, res_ptr, sql, sqlrow, MAX_SIZE, MAX);
 											break;
 										case 2:
-											choose_C(temp);
+											chooseClass(temp, sql, MAX_SIZE, MAX);
 											break;
 										case 3:
-											see("student",temp);
+											check("student",temp, res_ptr, sql, sqlrow, MAX);
 											break;
 										default :
 											count=0;
@@ -550,7 +551,7 @@ int main()
 									}
 									if(count==0)
 										break;
-									printf("任意键继续......\n");
+									printf("Input any number to exit......\n");
 									getchar();
 									getchar();
 								}
@@ -561,7 +562,7 @@ int main()
 							c=0;
 							break;
 
-						printf("任意键继续......\n");
+						printf("Input any number to exit......\n");
 						getchar();
 						getchar();
 					}
@@ -571,6 +572,6 @@ int main()
 		default:
 			break;
 	}
-	unconnect(sql);
+	disConnectToMysql(sql);
 	return 0;
 }

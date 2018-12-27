@@ -1,11 +1,17 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#include<string.h>
+#include<stdbool.h>
+#include "functions.h"
+#include "/usr/include/mysql/mysql.h"
 
-
-int vertify(char* name, char*  password, const char* type, MYSQL_RES * res_ptr, MYSQL* mysql){
+int vertify(char* name, char*  password, const char* type, MYSQL_RES * res_ptr, MYSQL* mysql, MYSQL_ROW *sqlrow){
     char str[20]="";
 	char str1[20]="";
 	MYSQL_ROW rows;
 	int flag=0;
-	*res_ptr=mysql_use_result(*mysql);
+	res_ptr=mysql_use_result(mysql);
 	if(res_ptr!=NULL)
 	{
 		while((rows=mysql_fetch_row(res_ptr)))

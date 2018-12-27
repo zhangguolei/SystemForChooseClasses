@@ -1,0 +1,41 @@
+# depslib dependency file v1.0
+1545926686 source:/home/ciecie/pro/FormalChooseClasses/main.c
+	<stdio.h>
+	<stdlib.h>
+	<mysql/mysql.h>
+	<time.h>
+	<string.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<fcntl.h>
+	<stdbool.h>
+	"functions.h"
+	"/usr/include/mysql/mysql.h"
+
+1545926064 /home/ciecie/pro/FormalChooseClasses/functions.h
+
+1535490771 /usr/include/mysql/mysql.h
+	<standards.h>
+	<sys/types.h>
+	<winsock2.h>
+	"mysql_version.h"
+	"mysql_com.h"
+	"mysql_time.h"
+	"my_list.h"
+	"typelib.h"
+	"my_alloc.h"
+
+1540300376 /usr/include/mysql/mysql_version.h
+	<custom_conf.h>
+
+1535490771 /usr/include/mysql/mysql_com.h
+
+1535490771 /usr/include/mysql/mysql_time.h
+
+1535490771 /usr/include/mysql/my_list.h
+
+1535490771 /usr/include/mysql/typelib.h
+	"my_alloc.h"
+
+1535490771 /usr/include/mysql/my_alloc.h
+
