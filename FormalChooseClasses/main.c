@@ -7,11 +7,11 @@
 #include<sys/stat.h>
 #include<fcntl.h>
 #include<stdbool.h>
-#include "functions.h"
+//#include "functions.h"
 #include "/usr/include/mysql/mysql.h"
 #define MAX_SIZE 20
 #define MAX 500
-/*void connect_()
+void connectToMysql()
 {
 	    sql=mysql_init(NULL);
 		if(!sql)
@@ -24,12 +24,12 @@
 			printf("\t\t Connect failed! \n");
 }
 
-void unconnect()
+void disConnectToMysql()
 {
 	    mysql_close(sql);
 }
 //vertify()
-int yanzheng(char* name,char*  passwd,const char* type)
+int vertify(char* name,char*  passwd,const char* type)
 {
 	char str[20]="";
 	char str1[20]="";
@@ -220,7 +220,7 @@ void check(char * s,char * t)
 		 }
 	}
 }
-void ch_passwd(const char* name,const char * no)
+void changePasswd(const char* name,const char * no)
 {
 	char sel[MAX];
    char old_pass[MAX_SIZE];
@@ -311,7 +311,7 @@ void ch_passwd(const char* name,const char * no)
 }
 
 
-void change_G()
+void changeGrade()
 {
 	char sno[MAX_SIZE];
 	char cno[MAX_SIZE];
@@ -354,7 +354,7 @@ void change_G()
 		}
 	}
 }
-void choose_C(const char* sno)
+void chooseClass(const char* sno)
 {
 	char cno[MAX_SIZE];
 	char in[MAX];
@@ -378,7 +378,7 @@ void choose_C(const char* sno)
 	}
 }
 
-void addstudent()
+void addStudent()
 {
 	FILE* fd;
 	char buf[50]="";
@@ -437,21 +437,19 @@ void addstudent()
 			}
 		}
 	}
-}*/
+}
 
 int main()
 {
-
-    MYSQL* sql;
-    MYSQL_RES * res_ptr;
-    MYSQL_ROW sqlrow;
 
 	int a,b;
 	int c=1;
 	int count,count1;
 	char temp[MAX_SIZE];
-	connectToMysql(sql);
-	addStudent(sql);
+	//connectToMysql(sql);
+	//addStudent(sql);
+	connectToMysql();
+	addStudent();
 	printf("************************************************\n");
 	printf("***** The System For Classes Choosing *****\n");
 	printf("\t\t 1.Log in\t\t\t\t\n");
@@ -482,7 +480,7 @@ int main()
 					switch(b)
 					{
 						case 1:
-							if(login("teacher",temp, MAX_SIZE, MAX, sql, res_ptr, sqlrow))
+							if(login("teacher",temp))
 							{
 								while(true)
 								{
@@ -499,13 +497,16 @@ int main()
 									switch(count1)
 									{
 										case 1:
-											changePasswd("teacher",temp, res_ptr, sql, sqlrow, MAX_SIZE, MAX);
+											//changePasswd("teacher",temp, res_ptr, sql, sqlrow, MAX_SIZE, MAX);
+											changePasswd("teacher",temp);
 											break;
 										case 2:
-											changeGrade(sql, MAX_SIZE, MAX);
+											//changeGrade(sql, MAX_SIZE, MAX);
+											changeGrade();
 											break;
 										case 3:
-											check("teacher",temp, res_ptr, sql, sqlrow, MAX);
+											//check("teacher",temp, res_ptr, sql, sqlrow, MAX);
+											check("teacher",temp);
 											break;
 										default:
 											count1=0;
@@ -520,7 +521,7 @@ int main()
 							}
 							break;
 						case 2:
-							if(login("student",temp, MAX_SIZE, MAX, sql, res_ptr, sqlrow))
+							if(login("student",temp))
 							{
 								while(true)
 								{
@@ -537,13 +538,16 @@ int main()
 									switch(count)
 									{
 										case 1:
-											changePasswd("student",temp, res_ptr, sql, sqlrow, MAX_SIZE, MAX);
+											//changePasswd("student",temp, res_ptr, sql, sqlrow, MAX_SIZE, MAX);
+											changePasswd("student",temp);
 											break;
 										case 2:
-											chooseClass(temp, sql, MAX_SIZE, MAX);
+											//chooseClass(temp, sql, MAX_SIZE, MAX);
+											chooseClass(temp);
 											break;
 										case 3:
-											check("student",temp, res_ptr, sql, sqlrow, MAX);
+											//check("student",temp, res_ptr, sql, sqlrow, MAX);
+											check("student",temp);
 											break;
 										default :
 											count=0;
@@ -572,6 +576,6 @@ int main()
 		default:
 			break;
 	}
-	disConnectToMysql(sql);
+	disConnectToMysql();
 	return 0;
 }

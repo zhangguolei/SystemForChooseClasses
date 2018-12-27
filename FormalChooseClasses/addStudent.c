@@ -4,6 +4,7 @@
 #include<string.h>
 #include<stdbool.h>
 #include "functions.h"
+#include<mysql/mysql.h>
 #include "/usr/include/mysql/mysql.h"
 
 void addStudent(MYSQL *mysql){
