@@ -4,20 +4,17 @@
 #include "functions.h"
 #include "/usr/include/mysql/mysql.h"
 
-void chooseClasses()
+void chooseClasses(MYSQL *mysql)
 {
-    MYSQL *conn;
-    //int res;
     MYSQL_RES * result;
     MYSQL_ROW row;
   //  conn = mysql_init(NULL);
     //建立与数据库的连接，如果不成功则退出
-    if(!mysql_real_connect(conn,"127.0.0.1","root","123456","ChooseClassSystem",3306,NULL,0))
+   /* if(!mysql_real_connect(mysql,"127.0.0.1","root","zy0101zy","mysql",3306,NULL,0))
     {
         printf("\nCannot access to the database!!! \n");
         return;
-    }
-
+    }*/
     char *studentId;
     //存放用户输入的密码
     char *password = "";
@@ -25,13 +22,13 @@ void chooseClasses()
     char *passwordQuery;
     char *query = "select * from students where studentId='";
     //char queryForPass[200] = "select * from studentsPassword where studentId='";
-    char *queryForPass = "select * from studentsPassword where studentId='";
+    char *queryForPass = "select password from studentsPassword where studentId='";
     char *queryForClass = "select * from chooseClasses where studentId='";
     char *queryForInsertChoose = "insert into chooseClasses values(";
     char *queryForClassesInfo = "select * from classes";
     char *queryForClassesName = "select * from classes where classId='";
     char *className;
-    char *classId = "";
+    char *classId;
     //char stuName[100];
     char *stuName;
     //int studentClassesScore=0;
@@ -49,15 +46,15 @@ void chooseClasses()
     strcat(queryForClass, "' and classId='");
     printf("SQL sentence: %s\n", query);
     printf("SQL sentence: %s\n", queryForPass);
-
-    if (mysql_query(conn, query) != 0)
+    mysql_free_result(result);
+    if (mysql_real_query(mysql, query, strlen(query))!= 0)
     {
         fprintf(stderr, "select fail\n");
         return;
     }
     else
     {
-        if ((result = mysql_store_result(conn)) == NULL)
+        if ((result = mysql_store_result(mysql)) == NULL)
         {
             fprintf(stderr, "save result set failure!\n");
             printf("Sorry, we cannot find your ID");
@@ -73,13 +70,14 @@ void chooseClasses()
                 printf("Your password:  ");
                 scanf("%s", password);
                 printf("\n");
-                //再次查询数据库，查询表studentsPassword得到学生密码
-                if(mysql_query(conn, queryForPass) != 0){
+                //再次查询数据库，查询表studentsPassword得到学生密码，再次查询前要释放上一次的数据集
+                mysql_free_result(result);
+                if(mysql_real_query(mysql, queryForPass, strlen(queryForPass)) != 0){
                     fprintf(stderr, "select fail\n");
                    return;
                 }
                 else{
-                    if ((result = mysql_store_result(conn)) == NULL)
+                    if ((result = mysql_store_result(mysql)) == NULL)
                     {
                         fprintf(stderr, "save result set failure!\n");
                         printf("Sorry, your password is wrong.");
@@ -91,9 +89,11 @@ void chooseClasses()
                             if(passwordQuery == password){
                                 printf("You are allowed!\n\n");
                                 printf("*************Classes List**************");
-                                if(mysql_query(conn, queryForClassesInfo) == 0){
+                                mysql_free_result(result);
+
+                                if(mysql_real_query(mysql, queryForClassesInfo, strlen(queryForClassesInfo))== 0){
                                         //查询结果不为空的话
-                                    if((result = mysql_store_result(conn)) != NULL){
+                                    if((result = mysql_store_result(mysql)) != NULL){
                                         if(mysql_num_rows(result))
                                         {
                                             //将课程信息循环打印出来
@@ -109,24 +109,28 @@ void chooseClasses()
 
                                 printf("\n\n");
                                 while(strcmp(classId, "exit")){
-                                    printf("Input the number of the class that you want to choose (input 'exit' to exit class choose):  ");
+                                    printf("Input the id of the class that you want to choose (input 'exit' to exit class choose):  ");
                                     scanf("%s", classId);
                                     strcat(queryForClass, classId);
                                     strcat(queryForClass, "'");
-                                    if(mysql_query(conn, queryForClass) == 0){
+
+                                    mysql_free_result(result);
+                                    if(mysql_real_query(mysql, queryForClass, strlen(queryForClass)) == 0){
                                             //说明该同学已经选过这门课程
-                                        if((result = mysql_store_result(conn)) != NULL){
-                                            printf("You has choose this class.");
+                                        if((result = mysql_store_result(mysql)) != NULL){
+                                            printf("You has choose this class before.\n");
                                                     continue;
                                         }
                                         //说明该同学没有选过这门课程，下面将这门课程的信息添加到数据库中去
                                         else{
                                             strcat(queryForClassesName, classId);
                                             strcat(queryForClassesName, "'");
-                                             if(mysql_query(conn, queryForClassesName) == 0){
-                                                if((result = mysql_store_result(conn)) != NULL){
+
+                                            mysql_free_result(result);
+                                             if(mysql_real_query(mysql, queryForClassesName, strlen(queryForClassesName))== 0){
+                                                if((result = mysql_store_result(mysql)) != NULL){
                                                         row=mysql_fetch_row(result);
-                                                    className = row[1];
+                                                    className = row[1];   //查询得到课程的名称，需要将它添加到选课表
                                                 }
                                              }
                                              strcat(queryForInsertChoose, studentId);
@@ -136,7 +140,9 @@ void chooseClasses()
                                              strcat(queryForInsertChoose, stuName);
                                              strcat(queryForInsertChoose, ",");
                                              strcat(queryForInsertChoose, className);
-                                             if(mysql_query(conn, queryForInsertChoose) == 0){
+                                             mysql_free_result(result);
+
+                                             if(mysql_real_query(mysql, queryForInsertChoose, strlen(queryForInsertChoose)) == 0){
                                                 printf("Add your choose information successfully!\n");
                                              }
                                              else {

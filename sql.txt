@@ -1,0 +1,58 @@
+create table classes(
+    -> id varchar(30) not null,
+    -> className varchar(50),
+    -> dept varchar(50),
+    -> teachersGroup varchar(50),
+    -> score int(10),
+    -> hours int(10),
+    -> semester varchar(50),
+    -> primary key (id));
+
+
+insert into classes values('100', 'CS', 'Imformation college', '2016', '5', '24', 'autum');
+insert into classes values('200', 'CS2', 'Imformation college2', '20162', '52', '242', 'autum2');
+
+
+create table students( studentId varchar(30) not null, studentName varchar(40), sex varchar(20), college varchar(50), numberOfClasses int(20), scoresOfClasses int(20), primary key(studentId));
+
+
+ insert into students values('2016013055', 'xiaowang', 'male', 'imformation', '6', '10');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into students values('2016013056', 'xiaowang2', 'female', 'imformation2', '62', '102');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into students values('2016013057', 'xiaowang3', 'male', 'imformation3', '63', '103');
+Query OK, 1 row affected (0.03 sec)
+
+
+
+
+
+create table studentsPassword(studentId varchar(30), password varchar(40) not null, primary key (studentId), foreign key(studentId) references students(studentId));
+
+
+insert into studentsPassword values('2016013055', '123456');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into studentsPassword values('2016013056', '1234567');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into studentsPassword values('2016013057', '12345678');
+Query OK, 1 row affected (0.00 sec)
+
+
+
+
+ create table chooseClasses(studentId varchar(30) not null, id varchar(100) not null, studentName varchar(30), className varchar(30), primary key(studentId, id), foreign key(studentId) references students(studentId), foreign key(id) references classes(id));
+
+
+
+ create table teachers(
+    -> teacherId varchar(30) not null primary key,
+    -> teacherName varchar(30),
+    -> sex varchar(20),
+    -> college varchar(50),
+    -> title varchar(50),
+    -> classes varchar(200));
+

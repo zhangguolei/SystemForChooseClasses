@@ -48,5 +48,3 @@ insert into course(cno,cname,Ccredit) values("1004","banyiyuanli",3);
 insert into teacher(tno,tname,tage,passwd) values("001","qw",2,"123456");
 insert into teacher(tno,tname,tage,passwd) values("002","zq",10,"123456");
 insert into teacher(tno,tname,tage,passwd) values("003","yx",35,"123456");
-
-insert into student(sno,sname,age,sex,sclass,passwd) values("10001", "wang", "19", "man", "ruanjian152", "123456");
