@@ -40,11 +40,17 @@ create table login
 	Time varchar(50)
 );
 
-insert into course(cno,cname,Ccredit) values("1001","shujujiegou",3);
-insert into course(cno,cname,Ccredit) values("1002","suanfafenxi",3);
-insert into course(cno,cname,Ccredit) values("1003","duomeiti",2.5);
-insert into course(cno,cname,Ccredit) values("1004","banyiyuanli",3);
+insert into course(cno,cname,Ccredit) values("10","Data structure",5);
+insert into course(cno,cname,Ccredit) values("11","Algorithm",2);
+insert into course(cno,cname,Ccredit) values("12","linux",5);
+insert into course(cno,cname,Ccredit) values("13","C Language",3);
+insert into course(cno,cname,Ccredit) values("14","Math",3);
 
-insert into teacher(tno,tname,tage,passwd) values("001","qw",2,"123456");
-insert into teacher(tno,tname,tage,passwd) values("002","zq",10,"123456");
-insert into teacher(tno,tname,tage,passwd) values("003","yx",35,"123456");
+insert into student(sno,sname,age,sex,sclass,passwd) values("2016013055", "zhongguolei", "19", "male", "xingxi163", "123456");
+insert into select_c(sno,cno,grade) values("2016013055","10",85);
+
+insert into teacher(tno,tname,tage,passwd) values("1001","yuxiao",20,"123456");
+insert into teacher(tno,tname,tage,passwd) values("1002","zouqing",20,"123456");
+insert into teacher(tno,tname,tage,passwd) values("1003","yujiantao",35,"123456");
+
+

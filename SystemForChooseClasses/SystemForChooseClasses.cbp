@@ -41,9 +41,6 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/chooseClasses">
-			<Option target="Debug" />
-		</Unit>
 		<Extensions>
 			<envvars />
 			<code_completion />
